@@ -1,0 +1,46 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const slugLabel = post.id.split('/').pop();
+
+const dateLabel = post.data.date.toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={`${post.data.title} — Maou Usually Talks`} description={post.data.description}>
+  <SiteHeader
+    crumbs={[
+      { label: 'home', href: '/' },
+      { label: 'notes', href: '/notes' },
+      { label: slugLabel },
+    ]}
+  />
+
+  <main class="mx-auto max-w-2xl px-6 py-12">
+    <article>
+      <p class="text-sm text-ink-soft">{dateLabel}</p>
+      <h1 class="mt-2 font-display text-4xl leading-tight">{post.data.title}</h1>
+      <p class="mt-3 text-lg text-ink-soft">{post.data.description}</p>
+
+      <div class="prose-notes mt-10">
+        <Content />
+      </div>
+    </article>
+  </main>
+</BaseLayout>

@@ -1,0 +1,43 @@
+---
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  crumbs?: Crumb[];
+}
+
+const { crumbs = [] } = Astro.props;
+---
+
+<header class="border-b border-rule">
+  <div class="mx-auto flex max-w-2xl items-baseline justify-between px-6 py-6">
+    <a href="/" class="font-display text-lg tracking-tight text-ink no-underline">
+      Maou Usually Talks
+    </a>
+    <nav class="flex gap-5 text-sm text-ink-soft">
+      <a href="/notes" class="hover:text-accent">notes</a>
+      <a href="https://github.com/daddymaou" class="hover:text-accent">github</a>
+      <a href="mailto:daddymaouu@gmail.com" class="hover:text-accent">mail</a>
+    </nav>
+  </div>
+  {
+    crumbs.length > 0 && (
+      <div class="mx-auto max-w-2xl px-6 pb-4 text-sm text-ink-soft">
+        {crumbs.map((crumb, i) => (
+          <>
+            {i > 0 && <span class="mx-1.5">/</span>}
+            {crumb.href ? (
+              <a href={crumb.href} class="hover:text-accent">
+                {crumb.label}
+              </a>
+            ) : (
+              <span>{crumb.label}</span>
+            )}
+          </>
+        ))}
+      </div>
+    )
+  }
+</header>

@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+
+const categories: { key: 'professional' | 'personal'; label: string }[] = [
+  { key: 'professional', label: 'Professional' },
+  { key: 'personal', label: 'Personal' },
+];
+
+const grouped = categories.map(({ key, label }) => ({
+  label,
+  posts: allPosts
+    .filter((p) => p.data.category === key)
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
+}));
+
+// Number of blank ruled lines to pad an empty category with,
+// so it reads like unwritten space on a page rather than a dead end.
+const BLANK_LINES = 4;
+---
+
+<BaseLayout
+  title="Notes — Maou Usually Talks"
+  description="Trying to keep a record of what I'm building and thinking about."
+>
+  <SiteHeader crumbs={[{ label: 'home', href: '/' }, { label: 'notes' }]} />
+
+  <main class="mx-auto max-w-2xl px-6 py-12">
+    <h1 class="font-display text-3xl">Trying to keep a record of what I'm building and thinking about.</h1>
+
+    {
+      grouped.map(({ label, posts }) => (
+        <section class="mt-12">
+          <h2 class="font-display text-xl">{label}</h2>
+          <div class="mt-3 border-t border-rule">
+            {posts.length > 0 ? (
+              posts.map((post) => (
+                <a
+                  href={`/notes/${post.id}`}
+                  class="block border-b border-rule py-4 hover:bg-paper-dim"
+                >
+                  <span class="font-display text-accent">{post.data.title}</span>
+                  <span class="text-ink-soft"> — {post.data.description}</span>
+                </a>
+              ))
+            ) : (
+              <div class="relative">
+                <div aria-hidden="true">
+                  {Array.from({ length: BLANK_LINES }).map(() => (
+                    <div class="h-11 border-b border-rule" />
+                  ))}
+                </div>
+                <p class="absolute left-1 top-4 text-sm italic text-ink-soft/70">
+                  Nothing here yet.
+                </p>
+              </div>
+            )}
+          </div>
+        </section>
+      ))
+    }
+  </main>
+</BaseLayout>

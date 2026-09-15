@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+/* Fraunces — display serif, used for headings only */
+@import "@fontsource/fraunces/400.css";
+@import "@fontsource/fraunces/500-italic.css";
+@import "@fontsource/fraunces/600.css";
+
+/* Source Serif 4 — body serif */
+@import "@fontsource/source-serif-4/400.css";
+@import "@fontsource/source-serif-4/400-italic.css";
+@import "@fontsource/source-serif-4/600.css";
+
+@theme {
+  --color-paper: #efeae0;
+  --color-paper-dim: #e6e0d2;
+  --color-ink: #24211c;
+  --color-ink-soft: #6b6558;
+  --color-accent: #7a2e2e;
+  --color-rule: #d6cfc0;
+
+  --font-display: "Fraunces", serif;
+  --font-body: "Source Serif 4", serif;
+}
+
+html {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+}
+
+body {
+  font-family: var(--font-body);
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-paper);
+}
+
+a {
+  color: inherit;
+}
+
+.prose-notes {
+  max-width: 65ch;
+  line-height: 1.75;
+}
+
+.prose-notes > * + * {
+  margin-top: 1.25em;
+}
+
+.prose-notes h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin-top: 2em;
+}
+
+.prose-notes h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  margin-top: 1.75em;
+}
+
+.prose-notes a {
+  color: var(--color-accent);
+  text-underline-offset: 2px;
+}
+
+.prose-notes blockquote {
+  border-left: 2px solid var(--color-rule);
+  padding-left: 1rem;
+  color: var(--color-ink-soft);
+  font-style: italic;
+}
+
+.prose-notes code {
+  background-color: var(--color-paper-dim);
+  padding: 0.1em 0.35em;
+  font-size: 0.9em;
+}
+
+.prose-notes pre {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.85em;
+}
+
+.prose-notes pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+.prose-notes ul,
+.prose-notes ol {
+  padding-left: 1.25em;
+}
+
+.prose-notes ul {
+  list-style: disc;
+}
+
+.prose-notes ol {
+  list-style: decimal;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

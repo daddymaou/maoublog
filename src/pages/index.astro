@@ -1,0 +1,65 @@
+---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import portrait from '../assets/portrait-source.jpg';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout
+  title="Maou Usually Talks"
+  description="Notes on building things, mostly — from Maou."
+>
+  <SiteHeader />
+
+  <main class="mx-auto max-w-2xl px-6">
+    <section class="grid grid-cols-1 gap-10 py-16 sm:grid-cols-5 sm:items-center sm:gap-8 sm:py-24">
+      <div class="sm:col-span-3">
+        <h1 class="font-display text-4xl leading-tight sm:text-5xl">
+          Maou usually talks about what he's building.
+        </h1>
+        <p class="mt-5 max-w-md text-ink-soft">
+          Sometimes it's a project post-mortem, sometimes it's a half-formed
+          thought that didn't fit anywhere else. This is where those land.
+        </p>
+        <a
+          href="/notes"
+          class="mt-6 inline-block border-b border-accent text-accent"
+        >
+          Read the notes
+        </a>
+      </div>
+      <div class="sm:col-span-2">
+        <Image
+          src={portrait}
+          alt="Portrait"
+          width={480}
+          height={480}
+          class="w-full max-w-[280px] grayscale sm:max-w-none"
+        />
+      </div>
+    </section>
+
+    {
+      posts.length > 0 && (
+        <section class="border-t border-rule py-12">
+          <h2 class="font-display text-xl">Recent</h2>
+          <ul class="mt-4 divide-y divide-rule">
+            {posts.map((post) => (
+              <li class="py-4">
+                <a href={`/notes/${post.id}`} class="hover:text-accent">
+                  <span class="font-display text-accent">{post.data.title}</span>
+                  <span class="text-ink-soft"> — {post.data.description}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </main>
+</BaseLayout>
