@@ -1,8 +1,9 @@
 ---
 title: "The og meta tag, done properly"
 description: "Why your link previews show up blank, and the small set of tags that fixes it."
-pubDate: 2026-09-24
-lane: "Professional"
+category: professional
+date: 2026-09-24
+draft: false
 ---
 
 Having problem with og meta tag?
